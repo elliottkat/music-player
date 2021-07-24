@@ -1,8 +1,9 @@
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
+
 import Player from './components/Player';
 
 function App() {
-  const [songs, setSongs] = useState([
+  const [songs] = useState([
     {
       title: 'Forget me to ft. Halsey',
       artist: 'Machine Gun Kelly',
@@ -29,14 +30,27 @@ function App() {
     }
   ]);
 
-  const [currentSongIndex, currentSongUpdateIndex] = useState(0);
-  const [nextSongIndex, nextSongIndexUpdate] = useState(currentSongIndex + 1);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [nextSongIndex, setNextSongIndex] = useState(currentSongIndex + 1);
+
+  // every time the current song index changes, we need to update the next song index
+  useEffect(() => {
+    setNextSongIndex(() => {
+      // If the next song index is greater than the length of songs, return to the beginning
+      if (currentSongIndex + 1 > songs.length - 1) {
+        return 0;
+      }
+      return currentSongIndex + 1;
+    });
+  }, [currentSongIndex]);
 
   return (
     <div className="App">
       <Player
-        song={songs[currentSongIndex]}
-        nextSong={songs[nextSongIndex]}
+        currentSongIndex={currentSongIndex}
+        setCurrentSongIndex={setCurrentSongIndex}
+        nextSongIndex={nextSongIndex}
+        songs={songs}
       />
     </div>
   );
