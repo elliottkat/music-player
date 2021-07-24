@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import Player from './components/Player';
 
 function App() {
@@ -42,7 +43,6 @@ function App() {
       return currentSongIndex + 1;
     });
   }, [currentSongIndex]);
-
 
   return (
     <div className="App">
